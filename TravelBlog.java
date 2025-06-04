@@ -144,7 +144,7 @@ public class TravelBlog {
         int month = Integer.parseInt(getMonthPublished());
         int day = Integer.parseInt(getDayPublished());
         int year = Integer.parseInt(getYearPublished());
-        return month * day + year;
+        return month * day * 10000 + year;
     }
 }
 
