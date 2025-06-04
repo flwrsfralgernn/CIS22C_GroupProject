@@ -91,6 +91,12 @@ public class TravelBlog {
         this.author = author;
     }
     public void setDatePublished(String datePublished) {
+        for(int i = 0; i < datePublished.length(); i++) {
+            char c = datePublished.charAt(i);
+            if ((c < '0' || c > '9') && c != '/') {
+                throw new IllegalArgumentException("Date is not constituted of numbers");
+            }
+        }
         this.datePublished = datePublished;
     }
     public void setMonthPublished(int month) {
@@ -144,7 +150,7 @@ public class TravelBlog {
         int month = Integer.parseInt(getMonthPublished());
         int day = Integer.parseInt(getDayPublished());
         int year = Integer.parseInt(getYearPublished());
-        return month * day * 10000 + year;
+        return month * day + year;
     }
 }
 
