@@ -67,14 +67,6 @@ public class WordId {
 		   }
 		   
 	   }
-	public static void main(String[] args) {
-		WordId test1 = new WordId("hi");
-		WordId test2 = new WordId("hi");
-		WordId test3 = new WordId("WRONG");
-		test1.assignId();
-		test2.assignId();
-		test3.getId();
-		System.out.println(test1.hashCode()+" "+test2.hashCode());
-	}
+
 
 }
