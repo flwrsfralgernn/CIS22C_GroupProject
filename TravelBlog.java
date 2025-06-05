@@ -12,6 +12,8 @@ public class TravelBlog {
     // most expensive
     private int price;
 
+    private String content;
+
     /** Constructors **/
     public TravelBlog() {
         this.title = "";
@@ -19,6 +21,7 @@ public class TravelBlog {
         this.datePublished = "01/01/2000";
         this.location = new Location();
         this.price = 1;
+        this.content = "";
     }
 
     public TravelBlog(String title, String author, String datePublished, Location location, int price) {
@@ -29,12 +32,13 @@ public class TravelBlog {
         this.price = price;
     }
 
-    public TravelBlog(String title, String author, String datePublished, String city, String country, int price) {
+    public TravelBlog(String title, String author, String datePublished, String city, String country, int price, String content) {
         this.title = title;
         this.author = author;
         this.datePublished = datePublished;
         this.location = new Location(city, country);
         this.price = price;
+        this.content = content;
     }
 
     public TravelBlog(String title, String author, int month, int day, int year, Location location, int price) {
@@ -96,6 +100,10 @@ public class TravelBlog {
 
     public int getPrice() {
         return price;
+    }
+
+    public String getContent() {
+        return content;
     }
 
     /** Setters **/
@@ -169,15 +177,16 @@ public class TravelBlog {
         this.price = price;
     }
 
+    public void setContent(String content) {
+        this.content = content;
+    }
+
     /** Hash */
     @Override
     public int hashCode() {
-        int month = Integer.parseInt(getMonthPublished());
-        int day = Integer.parseInt(getDayPublished());
-        int year = Integer.parseInt(getYearPublished());
-        return month * day + year;
+        return title.hashCode();
     }
-}
+}   
 
 class Location {
     /** Variables **/
