@@ -561,4 +561,30 @@ public class BST<T> {
             return currData;
         }
     }
+
+    /**
+     * Returns a LinkedList of all the elements in the BST in order
+     * @return a LinkedList of all elements in the BST in order
+     */
+    public LinkedList<T> toLinkedList() {
+        LinkedList<T> result = new LinkedList<>();
+        toLinkedList(root, result);
+        return result;
+    }
+    
+    /**
+     * Private helper method to toLinkedList, which recursively adds elements to
+     * the LinkedList in order.
+     * 
+     * @param start  the current Node to start from.
+     * @param result the LinkedList to add elements to.
+     */
+    private void toLinkedList(Node start, LinkedList<T> result) {
+        if (start == null) {
+            return;
+        }
+        toLinkedList(start.left, result);
+        result.addLast(start.data);
+        toLinkedList(start.right, result);
+    }
 }

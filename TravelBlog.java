@@ -1,5 +1,3 @@
-import java.text.DecimalFormat;
-
 public class TravelBlog {
     /** Variables **/
     private String title;
@@ -32,7 +30,8 @@ public class TravelBlog {
         this.price = price;
     }
 
-    public TravelBlog(String title, String author, String datePublished, String city, String country, int price, String content) {
+    public TravelBlog(String title, String author, String datePublished, String city, String country, int price,
+            String content) {
         this.title = title;
         this.author = author;
         this.datePublished = datePublished;
@@ -186,7 +185,17 @@ public class TravelBlog {
     public int hashCode() {
         return title.hashCode();
     }
-}   
+
+    @Override
+    public String toString() {
+        return "Title: " + title + "\n" +
+                "Author: " + author + "\n" +
+                "Date: " + datePublished + "\n" +
+                "Location: " + location.toString() + "\n" +
+                "Price: " + price + "\n" +
+                "Content: " + content + "\n";
+    }
+}
 
 class Location {
     /** Variables **/
@@ -221,4 +230,10 @@ class Location {
     public void setCountryName(String countryName) {
         this.countryName = countryName;
     }
+
+    @Override
+    public String toString() {
+        return cityName + ", " + countryName;
+    }
+
 }
