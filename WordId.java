@@ -80,4 +80,9 @@ public class WordId {
 
     }
 
+    @Override
+    public String toString() {
+        return "WordId [word=" + word + ", id=" + id + "]";
+    }
+
 }

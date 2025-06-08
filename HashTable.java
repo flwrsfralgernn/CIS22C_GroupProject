@@ -120,7 +120,7 @@ public class HashTable<T> {
      * @return the index in the table
      */
     private int hash(T obj) {
-        return obj.hashCode() % table.size();
+        return Math.abs(obj.hashCode()) % table.size();
     }
 
     /**

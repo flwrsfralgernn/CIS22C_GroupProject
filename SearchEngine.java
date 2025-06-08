@@ -16,6 +16,7 @@ public class SearchEngine {
      * @return the cleaned string with only alphanumeric characters and spaces
      */
     private static String removeNonAlphaNumeric(String s) {
+        s = s.replaceAll("[—–-]", " ");
         return s.replaceAll("[^a-zA-Z0-9 ]", "");
     }
 
@@ -69,10 +70,11 @@ public class SearchEngine {
 
             String[] words = allWords.split("\\s+");
             for (String word : words) {
-                if (!STOP_WORDS.contains(word.toLowerCase())) {
+                word = word.toLowerCase();
+                if (!STOP_WORDS.contains(word)) {
                     WordId id = new WordId(word);
-                    id.assignId();
                     if (!wordIdTable.contains(id)) {
+                        id.assignId();
                         wordIdTable.add(id);
                         wordIdList.add(id);
                     }
@@ -85,16 +87,17 @@ public class SearchEngine {
      * Creates a list of binary search trees (BSTs) for each word, containing blogs that mention the word.
      */
     public void createBSTList() {
-        bstArray = new ArrayList<>(wordIdTable.getNumElements());
+        bstArray = new ArrayList<>();
+        for (int i = 0; i < wordIdList.size(); i++) {
+            bstArray.add(new BST<>());
+        }
 
         for (WordId wordId : wordIdList) {
-            BST<TravelBlog> bst = new BST<>();
             for (TravelBlog blog : blogList) {
                 if (blog.toString().toLowerCase().contains(wordId.getWord().toLowerCase())) {
-                    bst.insert(blog, new TitleComparator());
+                    bstArray.get(wordId.getId()).insert(blog, new TitleComparator());
                 }
             }
-            bstArray.set(wordId.getId(), bst);
         }
     }
 
@@ -111,7 +114,7 @@ public class SearchEngine {
         for (String word : query) {
             word = removeNonAlphaNumeric(word).toLowerCase();
 
-            if (STOP_WORDS.contains(word.toLowerCase())) {
+            if (STOP_WORDS.contains(word)) {
                 continue; // Skip stop words
             }
 
@@ -120,19 +123,40 @@ public class SearchEngine {
                 int id = wordIdTable.get(queryWordId).getId();
                 if (id < bstArray.size()) {
                     LinkedList<TravelBlog> blogs = bstArray.get(id).toLinkedList();
-
                     blogs.positionIterator();
                     while (!blogs.offEnd()) {
                         TravelBlog blog = blogs.getIterator();
-                        if (blog.toString().toLowerCase().contains(word)) {
-                            resultBST.insert(blog, titleComparator);
-                        }
+                        resultBST.insert(blog, titleComparator);
                         blogs.advanceIterator();
                     }
                 }
             }
         }
         return resultBST;
+    }
+
+    public static void main(String[] args) {
+        SearchEngine searchEngine = new SearchEngine();
+        try {
+            searchEngine.readBlogs("input.txt");
+            searchEngine.createHashTable();
+            searchEngine.createBSTList();
+
+            String[] query = {"Hiroshima", "kyoto", "paris", "lyon"};
+            BST<TravelBlog> results = searchEngine.search(query);
+
+            System.out.println("Search Results:");
+            LinkedList<TravelBlog> resultList = results.toLinkedList();
+            resultList.positionIterator();
+            int idx = 1;
+            while (!resultList.offEnd()) {
+                TravelBlog blog = resultList.getIterator();
+                System.out.println(idx + ". " + blog.getTitle());
+                resultList.advanceIterator();
+            }
+        } catch (IOException e) {
+            System.err.println("Error reading blogs: " + e.getMessage());
+        }
     }
 }
 

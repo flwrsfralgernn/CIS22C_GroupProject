@@ -186,14 +186,28 @@ public class TravelBlog {
         return title.hashCode();
     }
 
+    /**
+     * Returns a string representation of the TravelBlog in the format:
+     * <pre>
+     * title | author | datePublished | location | price | content
+     * </pre>
+     * 
+     * @return A string representation of this TravelBlog
+     */
     @Override
     public String toString() {
-        return "Title: " + title + "\n" +
-                "Author: " + author + "\n" +
-                "Date: " + datePublished + "\n" +
-                "Location: " + location.toString() + "\n" +
-                "Price: " + price + "\n" +
-                "Content: " + content + "\n";
+        return title + " | " + author + " | " + datePublished + " | " + location + " | " + price + " | " + content;
+    }
+
+
+    /**
+     * Returns a pretty string representation of the travel blog.
+     * 
+     * @return A formatted string with title, author, date published, location,
+     *         price, and content.
+     */
+    public String toPrettyString() {
+        return String.format("%s%nAuthor: %s%nDate Published: %s%nLocation: %s%nPrice: %d%n%n%s%n", title, author, datePublished, location, price, content);
     }
 }
 
