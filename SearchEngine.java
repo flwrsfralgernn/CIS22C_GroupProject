@@ -138,7 +138,7 @@ public class SearchEngine {
     public static void main(String[] args) {
         SearchEngine searchEngine = new SearchEngine();
         try {
-            searchEngine.readBlogs("input.txt");
+            searchEngine.readBlogs("Input.txt");
             searchEngine.createHashTable();
             searchEngine.createBSTList();
 
