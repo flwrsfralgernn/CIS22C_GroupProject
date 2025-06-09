@@ -407,4 +407,24 @@ public class CustomerInterface {
             // Continue without updating search engine
         }
     }
+/** 
+ * Calculates and prints the average price level of all blogs.
+ * @param blogsList The list of travel blogs
+ */
+public static void printAveragePrice(ArrayList<TravelBlog> blogsList) {
+    if (blogsList.isEmpty()) {
+        System.out.println("No blogs available to calculate average price.");
+        return;
+    }
+
+    double totalPrice = 0;
+    for (TravelBlog blog : blogsList) {
+        totalPrice += blog.getPrice();
+    }
+
+    double avgPrice = totalPrice / blogsList.size();
+    DecimalFormat df = new DecimalFormat("#.##");
+
+    System.out.println("Average price level: " + df.format(avgPrice));
 }
+
