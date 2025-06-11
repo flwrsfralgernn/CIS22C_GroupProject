@@ -47,8 +47,6 @@ public class CustomerInterface {
                 
                 // Initialize search engine
                 searchEngine.readBlogs("Input.txt");
-                searchEngine.createHashTable();
-                searchEngine.createBSTList();
             }
         } catch (Exception e) {
             // Continue without blog data if file issues
@@ -397,8 +395,6 @@ public class CustomerInterface {
             
             // Reinitialize search engine
             searchEngine.readBlogs("temp_blogs.txt");
-            searchEngine.createHashTable();
-            searchEngine.createBSTList();
             
             // Delete temporary file
             new File("temp_blogs.txt").delete();
