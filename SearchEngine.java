@@ -24,7 +24,7 @@ public class SearchEngine {
     private HashTable<WordId> wordIdTable = new HashTable<>(1000);
     private ArrayList<TravelBlog> blogList = new ArrayList<>();
     private ArrayList<WordId> wordIdList = new ArrayList<>();
-
+    
     /**
      * Comparator for comparing TravelBlogs based on their titles.
      */
@@ -40,6 +40,7 @@ public class SearchEngine {
      *
      * @param fileName the name of the file containing travel blog data
      * @throws IOException if an I/O error occurs
+     * @postcondition Search engine attributes are updated according to blog
      */
     public void readBlogs(String fileName) throws IOException {
         Scanner scanner = new Scanner(new File(fileName));
@@ -56,50 +57,58 @@ public class SearchEngine {
 
             TravelBlog blog = new TravelBlog(title, author, date, city, country, price, content);
             blogList.add(blog);
+            add(blog);
         }
         scanner.close();
     }
 
     /**
-     * Creates a hash table of words from the travel blogs, excluding stop words.
+     * Adds a blog to the search engine
+     * @param blog to be added
+     * @postcondition blog is added from search engine attributes
      */
-    public void createHashTable() {
-        for (TravelBlog blog : blogList) {
-            String allWords = blog.toString();
-            allWords = removeNonAlphaNumeric(allWords);
+    public void add(TravelBlog blog) {
+    	TitleComparator titleComparator = new TitleComparator();
+        String allWords = blog.toString();
+        allWords = removeNonAlphaNumeric(allWords);
 
-            String[] words = allWords.split("\\s+");
-            for (String word : words) {
-                word = word.toLowerCase();
-                if (!STOP_WORDS.contains(word)) {
-                    WordId id = new WordId(word);
-                    if (!wordIdTable.contains(id)) {
-                        id.assignId();
-                        wordIdTable.add(id);
-                        wordIdList.add(id);
-                    }
+        String[] words = allWords.split("\\s+");
+        for (String word : words) {
+            word = word.toLowerCase();
+            if (!STOP_WORDS.contains(word)) {
+                WordId id = new WordId(word);
+                if (!wordIdTable.contains(id)) {
+                    id.assignId();
+                    wordIdTable.add(id);
+                    wordIdList.add(id);
+                    //creates word array
+                    bstArray.add(new BST<>());
+                    bstArray.get(id.getId()).insert(blog, titleComparator);
+                    
+                }
+                //insert blog into word bst
+                else {
+                	int index = wordIdTable.get(id).getId();
+                	bstArray.get(index).insert(blog, titleComparator);
                 }
             }
         }
     }
-
     /**
-     * Creates a list of binary search trees (BSTs) for each word, containing blogs that mention the word.
+     * Deletes a blog from the search engine
+     * @param blog to be deleted
+     * @postcondition blog is removed from search engine, nothing changes if blog does not exist.
      */
-    public void createBSTList() {
-        bstArray = new ArrayList<>();
-        for (int i = 0; i < wordIdList.size(); i++) {
-            bstArray.add(new BST<>());
-        }
-
-        for (WordId wordId : wordIdList) {
-            for (TravelBlog blog : blogList) {
-                if (blog.toString().toLowerCase().contains(wordId.getWord().toLowerCase())) {
-                    bstArray.get(wordId.getId()).insert(blog, new TitleComparator());
-                }
-            }
-        }
+    public void remove(TravelBlog blog) {
+    	TitleComparator titleComparator = new TitleComparator();
+    	blogList.remove(blog); //removes from list of blogs.
+    	
+    	//loops through each word and removes blog(Remove does not affect array if element not present).
+    	for (int i = 0; i < bstArray.size(); i++) {
+    		bstArray.get(i).remove(blog, titleComparator); 
+    	}	
     }
+
 
     /**
      * Searches for blogs containing any of the words in the query.
@@ -139,12 +148,14 @@ public class SearchEngine {
         SearchEngine searchEngine = new SearchEngine();
         try {
             searchEngine.readBlogs("Input.txt");
-            searchEngine.createHashTable();
-            searchEngine.createBSTList();
+            //searchEngine.createHashTable();
 
             String[] query = {"Hiroshima", "kyoto", "paris", "lyon"};
+            
+            //searchEngine.remove(new TravelBlog("Art Cities Beyond Paris: Lyon's Murals and Marseille's Street Art","","",new Location(),5));
+            searchEngine.add(new TravelBlog("Abcd Paris test article","Paris","",new Location(),5));
+            
             BST<TravelBlog> results = searchEngine.search(query);
-
             System.out.println("Search Results:");
             LinkedList<TravelBlog> resultList = results.toLinkedList();
             resultList.positionIterator();
@@ -152,6 +163,7 @@ public class SearchEngine {
             while (!resultList.offEnd()) {
                 TravelBlog blog = resultList.getIterator();
                 System.out.println(idx + ". " + blog.getTitle());
+                idx++;
                 resultList.advanceIterator();
             }
         } catch (IOException e) {
