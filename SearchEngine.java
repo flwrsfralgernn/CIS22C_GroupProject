@@ -1,6 +1,11 @@
 import java.util.*;
 import java.io.*;
 
+/** 
+ * Class for Search Engine that manages travel blogs and allows searching through them.
+ * @author Prajwal Agrawao
+ * @author Rahul John
+ */
 public class SearchEngine {
 
     // List of common stop words to ignore in search queries
@@ -68,7 +73,7 @@ public class SearchEngine {
      * @postcondition blog is added from search engine attributes
      */
     public void add(TravelBlog blog) {
-    	TitleComparator titleComparator = new TitleComparator();
+        TitleComparator titleComparator = new TitleComparator();
         String allWords = blog.toString();
         allWords = removeNonAlphaNumeric(allWords);
 
@@ -83,17 +88,17 @@ public class SearchEngine {
                     wordIdList.add(id);
                     //creates word array
                     bstArray.add(new BST<>());
-                    bstArray.get(id.getId()).insert(blog, titleComparator);
-                    
+
                 }
                 //insert blog into word bst
                 else {
-                	int index = wordIdTable.get(id).getId();
-                	bstArray.get(index).insert(blog, titleComparator);
+                    int index = wordIdTable.get(id).getId();
+                    bstArray.get(index).insert(blog, titleComparator);
                 }
             }
         }
     }
+    
     /**
      * Deletes a blog from the search engine
      * @param blog to be deleted
@@ -103,12 +108,11 @@ public class SearchEngine {
     	TitleComparator titleComparator = new TitleComparator();
     	blogList.remove(blog); //removes from list of blogs.
     	
-    	//loops through each word and removes blog(Remove does not affect array if element not present).
+    	// loops through each word and removes blog (Remove does not affect array if element not present).
     	for (int i = 0; i < bstArray.size(); i++) {
     		bstArray.get(i).remove(blog, titleComparator); 
     	}	
     }
-
 
     /**
      * Searches for blogs containing any of the words in the query.
