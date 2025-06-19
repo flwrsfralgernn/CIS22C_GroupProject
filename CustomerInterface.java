@@ -165,10 +165,10 @@ public class CustomerInterface {
 
                 if (searchChoice.equals("1")) {
                     System.out.print("\nEnter the exact title: ");
-                    title = keyboard.nextLine();
+                    title = keyboard.nextLine().trim();
 
                     System.out.print("Enter the author name: ");
-                    author = keyboard.nextLine();
+                    author = keyboard.nextLine().trim();
 
                     TravelBlog tempBlog = new TravelBlog();
                     tempBlog.setTitle(title);

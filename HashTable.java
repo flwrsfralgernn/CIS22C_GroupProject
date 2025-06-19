@@ -275,4 +275,21 @@ public class HashTable<T> {
             return result.toString() + "\n";
         }
     }
+
+    /**
+     * Returns an ArrayList of all the elements in the HashTable.
+     * 
+     * @return an ArrayList of all the elements in the HashTable
+     */
+    public ArrayList<T> getAllElements() {
+        ArrayList<T> elements = new ArrayList<>();
+        for (LinkedList<T> bucket : table) {
+            bucket.positionIterator();
+            while (!bucket.offEnd()) {
+                elements.add(bucket.getIterator());
+                bucket.advanceIterator();
+            }
+        }
+        return elements;
+    }
 }

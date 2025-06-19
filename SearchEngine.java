@@ -87,7 +87,9 @@ public class SearchEngine {
                     wordIdTable.add(id);
                     wordIdList.add(id);
                     //creates word array
-                    bstArray.add(new BST<>());
+                    BST<TravelBlog> newBst = new BST<>();
+                    newBst.insert(blog, titleComparator);
+                    bstArray.add(newBst);
 
                 }
                 //insert blog into word bst
@@ -154,7 +156,7 @@ public class SearchEngine {
             searchEngine.readBlogs("Input.txt");
             //searchEngine.createHashTable();
 
-            String[] query = {"Hiroshima", "kyoto", "paris", "lyon"};
+            String[] query = {"Hiroshima", "kyoto", "paris", "manta"};
             
             //searchEngine.remove(new TravelBlog("Art Cities Beyond Paris: Lyon's Murals and Marseille's Street Art","","",new Location(),5));
             searchEngine.add(new TravelBlog("Abcd Paris test article","Paris","",new Location(),5));
