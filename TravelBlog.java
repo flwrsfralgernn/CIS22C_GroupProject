@@ -186,6 +186,17 @@ public class TravelBlog {
         return title.hashCode();
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == this) {
+            return true;
+        } else if (!(obj instanceof TravelBlog)) {
+            return false;
+        }
+        TravelBlog other = (TravelBlog) obj;
+        return title.equals(other.title);
+    }
+
     /**
      * Returns a string representation of the TravelBlog in the format:
      * <pre>
