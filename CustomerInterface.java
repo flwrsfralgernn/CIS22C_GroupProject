@@ -111,8 +111,8 @@ public class CustomerInterface {
                     blogsList.add(newBlog);
                     System.out.println("\nBlog successfully uploaded!");
 
-                    // Rebuild search engine
-                    rebuildSearchEngine(searchEngine, blogsList);
+                    // Update search engine
+                    searchEngine.add(newBlog);
                 }
 
             } else if (choice.equals("B") || choice.equals("b")) {
@@ -147,7 +147,7 @@ public class CustomerInterface {
                         blogTable.delete(foundBlog);
                         blogsList.remove(foundBlog);
                         System.out.println("\nBlog successfully deleted.");
-                        rebuildSearchEngine(searchEngine, blogsList);
+                        searchEngine.remove(foundBlog);
                     } else {
                         System.out.println("\nDeletion cancelled.");
                     }
@@ -289,7 +289,6 @@ public class CustomerInterface {
                         System.out.println("\nInvalid choice.");
                     }
 
-                    rebuildSearchEngine(searchEngine, blogsList);
                 }
 
             } else if (choice.equals("E") || choice.equals("e")) {
@@ -375,38 +374,6 @@ public class CustomerInterface {
             }
         }
         return null;
-    }
-
-    /**
-     * Helper method to rebuild search engine indices
-     * 
-     * @param searchEngine the search engine instance
-     * @param blogsList    the current list of blogs
-     */
-    private static void rebuildSearchEngine(SearchEngine searchEngine, ArrayList<TravelBlog> blogsList) {
-        try {
-            // Write to temporary file
-            PrintWriter tempWriter = new PrintWriter(new FileWriter("temp_blogs.txt"));
-            for (TravelBlog blog : blogsList) {
-                tempWriter.println(blog.getTitle() + "|" +
-                        blog.getAuthor() + "|" +
-                        blog.getDatePublished() + "|" +
-                        blog.getLocationCity() + "|" +
-                        blog.getLocationCountry() + "|" +
-                        blog.getPrice() + "|" +
-                        blog.getContent());
-            }
-            tempWriter.close();
-
-            // Reinitialize search engine
-            searchEngine.readBlogs("temp_blogs.txt");
-
-            // Delete temporary file
-            new File("temp_blogs.txt").delete();
-
-        } catch (IOException e) {
-            // Continue without updating search engine
-        }
     }
 
     
