@@ -242,6 +242,8 @@ public class CustomerInterface {
                 if (foundBlog == null) {
                     System.out.println("\nBlog not found.");
                 } else {
+                    searchEngine.remove(foundBlog); //removes blog in preparation for re-adding
+                    
                     System.out.println("\nCurrent details:");
                     System.out.println(foundBlog.toPrettyString());
 
@@ -288,6 +290,7 @@ public class CustomerInterface {
                     } else {
                         System.out.println("\nInvalid choice.");
                     }
+                    searchEngine.add(foundBlog); //updates blog in searchEngine
 
                 }
 
